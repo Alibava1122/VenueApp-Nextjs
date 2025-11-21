@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ChevronDownIcon } from "./icons/ChevronDownIcon";
 import { SearchIcon } from "./icons/SearchIcon";
@@ -9,18 +9,55 @@ import { VenueIcon } from "./icons/VenueIcon";
 
 export function SearchFilters() {
   const [activeCategory, setActiveCategory] = useState<"venue" | "vendors">("venue");
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState("UAE");
+  const [selectedTimeframe, setSelectedTimeframe] = useState("Anytime");
+  const [selectedGuests, setSelectedGuests] = useState("10–20 Guests");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsCollapsed(window.scrollY > 180);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="relative w-full max-w-5xl pt-16 px-6">
-      
+        <div
+          className={`fixed left-1/2 top-4 z-50 hidden -translate-x-1/2 transition-all duration-300 sm:flex ${isCollapsed
+            ? "pointer-events-auto opacity-100 scale-100"
+            : "pointer-events-none -translate-y-2 scale-95 opacity-0"
+          }`}
+        >
+          <div className="pointer-events-auto flex min-w-[520px] items-center gap-4 rounded-xl bg-white/95 px-6 py-2 shadow-md">
+            <div className="flex flex-1 items-center justify-between text-center text-sm font-semibold text-gray-800 divide-x divide-gray-200">
+              {[selectedLocation, selectedTimeframe, selectedGuests].map((label) => (
+                <span key={label} className="flex-1 px-3 first:pl-0 last:pr-0">
+                  {label}
+                </span>
+              ))}
+            </div>
+
+          <button
+            className="flex items-center justify-center rounded-[6px] bg-[#FF5037] px-3 py-2 text-white shadow-md"
+            aria-label="Search"
+          >
+            <SearchIcon className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
       {/* DESKTOP CATEGORY TABS */}
       <div className="absolute left-1/2 top-0 z-20 hidden -translate-x-1/2 -translate-y-[-35%] items-center gap-2 rounded-[9px] bg-white px-3 py-2 text-gray-900 shadow-lg md:flex">
         <button
-          className={`flex items-center gap-2 rounded-[9px] px-5 py-2 text-base font-semibold ${
-            activeCategory === "venue"
+          className={`flex items-center gap-2 rounded-[9px] px-5 py-2 text-base font-semibold ${activeCategory === "venue"
               ? "bg-[#FF5037] text-white"
               : "bg-transparent text-gray-900"
-          }`}
+            }`}
           onClick={() => setActiveCategory("venue")}
         >
           <VenueIcon className={`h-6 w-6 ${activeCategory === "venue" ? "text-white" : "text-gray-500"}`} />
@@ -28,11 +65,10 @@ export function SearchFilters() {
         </button>
 
         <button
-          className={`flex items-center gap-2 rounded-[9px] px-5 py-2 text-base font-semibold ${
-            activeCategory === "vendors"
+          className={`flex items-center gap-2 rounded-[9px] px-5 py-2 text-base font-semibold ${activeCategory === "vendors"
               ? "bg-[#FF5037] text-white"
               : "bg-transparent text-gray-900"
-          }`}
+            }`}
           onClick={() => setActiveCategory("vendors")}
         >
           <VendorsIcon className={`h-4 w-4 ${activeCategory === "vendors" ? "text-white" : "text-gray-400"}`} />
@@ -41,16 +77,18 @@ export function SearchFilters() {
       </div>
 
       {/* CONTAINER */}
-      <div className="w-full rounded-2xl bg-white p-6 text-gray-900 shadow-xl">
+      <div
+        className={`w-full rounded-2xl bg-white p-6 text-gray-900 shadow-xl transition-all duration-300 ${isCollapsed ? "pointer-events-none translate-y-6 opacity-0" : "translate-y-0 opacity-100"
+          }`}
+      >
 
         {/* MOBILE TABS */}
         <div className="mb-4 flex gap-2 md:hidden">
           <button
-            className={`flex flex-1 items-center justify-center gap-2 rounded-[9px] px-4 py-4 text-base font-semibold ${
-              activeCategory === "venue"
+            className={`flex flex-1 items-center justify-center gap-2 rounded-[9px] px-4 py-4 text-base font-semibold ${activeCategory === "venue"
                 ? "bg-[#FF5037] text-white"
                 : "bg-gray-100 text-gray-700"
-            }`}
+              }`}
             onClick={() => setActiveCategory("venue")}
           >
             <VenueIcon className="h-5 w-5" />
@@ -58,11 +96,10 @@ export function SearchFilters() {
           </button>
 
           <button
-            className={`flex flex-1 items-center justify-center gap-2 rounded-[9px] px-4 py-4 text-base font-semibold ${
-              activeCategory === "vendors"
+            className={`flex flex-1 items-center justify-center gap-2 rounded-[9px] px-4 py-4 text-base font-semibold ${activeCategory === "vendors"
                 ? "bg-[#FF5037] text-white"
                 : "bg-gray-100 text-gray-700"
-            }`}
+              }`}
             onClick={() => setActiveCategory("vendors")}
           >
             <VendorsIcon className="h-4 w-4" />
@@ -76,9 +113,13 @@ export function SearchFilters() {
           <label className="flex flex-col gap-3 text-left">
             <span className="text-[14px] text-gray-600">Where</span>
             <div className="relative">
-              <select className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none">
-                <option>Dubai</option>
-                <option>UAE</option>
+              <select
+                className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none"
+                value={selectedLocation}
+                onChange={(event) => setSelectedLocation(event.target.value)}
+              >
+                <option value="Dubai">Dubai</option>
+                <option value="UAE">UAE</option>
               </select>
               <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
@@ -87,8 +128,15 @@ export function SearchFilters() {
           <label className="flex flex-col gap-3 text-left">
             <span className="text-[14px] text-gray-600">When</span>
             <div className="relative">
-              <select className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none">
-                <option>Anytime</option>
+              <select
+                className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none"
+                value={selectedTimeframe}
+                onChange={(event) => setSelectedTimeframe(event.target.value)}
+              >
+                <option value="Anytime">Anytime</option>
+                <option value="This Week">This Week</option>
+                <option value="This Month">This Month</option>
+                <option value="Flexible">Flexible</option>
               </select>
               <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
@@ -97,8 +145,15 @@ export function SearchFilters() {
           <label className="flex flex-col gap-3 text-left">
             <span className="text-[14px] text-gray-600">Guests</span>
             <div className="relative">
-              <select className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none">
-                <option>10-20</option>
+              <select
+                className="w-full appearance-none rounded-xl p-3 pr-10 text-base font-medium text-gray-800 focus:outline-none"
+                value={selectedGuests}
+                onChange={(event) => setSelectedGuests(event.target.value)}
+              >
+                <option value="0–10 Guests">0–10 Guests</option>
+                <option value="10–20 Guests">10–20 Guests</option>
+                <option value="20–40 Guests">20–40 Guests</option>
+                <option value="40+ Guests">40+ Guests</option>
               </select>
               <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>

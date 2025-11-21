@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Skyline Ballroom",
+    "description": "Panoramic rooftop views, dramatic lighting, and flexible seating for any celebration.",
+    "image": "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Greenhouse Loft",
+    "description": "Sun-drenched glass walls wrapped in greenery create a serene backdrop for intimate events.",
+    "image": "https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "title": "Art House Studio",
+    "description": "Industrial-modern studio with rotating art installations and open floor plan for custom layouts.",
+    "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80"
+  }
+]
+

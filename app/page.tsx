@@ -1,32 +1,12 @@
 import Image from "next/image";
 import { Header } from "./components/Header";
 import { SearchFilters } from "./components/SearchFilters";
+import { VenueCard, type Venue } from "./components/VenueCard";
+import featuredVenuesData from "./data/featuredVenues.json";
+
+const featuredVenues = featuredVenuesData as Venue[];
 
 export default function Home() {
-  const featuredVenues = [
-    {
-      title: "Skyline Ballroom",
-      description:
-        "Panoramic rooftop views, dramatic lighting, and flexible seating for any celebration.",
-      image:
-        "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      title: "Greenhouse Loft",
-      description:
-        "Sun-drenched glass walls wrapped in greenery create a serene backdrop for intimate events.",
-      image:
-        "https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      title: "Art House Studio",
-      description:
-        "Industrial-modern studio with rotating art installations and open floor plan for custom layouts.",
-      image:
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80",
-    },
-  ];
-
   return (
     <main className="relative min-h-screen overflow-hidden text-white">
       <div
@@ -53,15 +33,6 @@ export default function Home() {
         </div>
       </section>
 
-      <Image
-        src="/assets/bottom.png"
-        alt="Scroll"
-        width={60}
-        height={60}
-        className="absolute bottom-40 left-1/2 z-20 hidden -translate-x-1/2 pointer-events-none sm:block"
-        priority
-      />
-
       <section className="relative z-10 mt-10 bg-gradient-to-b from-black/80 via-black to-black px-4 py-16 sm:px-6 lg:px-10">
         <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
           <p className="text-sm uppercase tracking-[0.4em] text-white/60">
@@ -79,27 +50,7 @@ export default function Home() {
 
         <div className="mx-auto mt-12 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredVenues.map((venue) => (
-            <article
-              key={venue.title}
-              className="group flex flex-col overflow-hidden rounded-3xl border border-white/5 bg-white/5 backdrop-blur-lg transition hover:-translate-y-1 hover:border-white/20"
-            >
-              <div className="relative h-56 w-full overflow-hidden">
-                <Image
-                  src={venue.image}
-                  alt={venue.title}
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-3 px-6 py-8">
-                <h3 className="text-2xl font-semibold">{venue.title}</h3>
-                <p className="text-base text-white/70">{venue.description}</p>
-                <div className="mt-auto text-sm font-semibold text-rose-200">
-                  View details →
-                </div>
-              </div>
-            </article>
+            <VenueCard key={venue.title} venue={venue} />
           ))}
         </div>
       </section>
