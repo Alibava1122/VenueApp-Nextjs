@@ -14,7 +14,7 @@ export function SearchFilters() {
     <div className="relative w-full max-w-5xl pt-16 px-6">
       
       {/* DESKTOP CATEGORY TABS */}
-      <div className="absolute left-1/2 top-0 z-20 hidden -translate-x-1/2 -translate-y-[-30%] items-center gap-2 rounded-[9px] bg-white px-3 py-2 text-gray-900 shadow-lg md:flex">
+      <div className="absolute left-1/2 top-0 z-20 hidden -translate-x-1/2 -translate-y-[-35%] items-center gap-2 rounded-[9px] bg-white px-3 py-2 text-gray-900 shadow-lg md:flex">
         <button
           className={`flex items-center gap-2 rounded-[9px] px-5 py-2 text-base font-semibold ${
             activeCategory === "venue"
